@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Core Branding | Premium Signage & Print</title>
+    
+    <!-- All CSS is now defined internally to ensure 100% local rendering -->
+    <style>
+        /* CSS Variables for Clean Design */
+        :root {
+            --color-dark-900: #0a0a0a;
+            --color-dark-800: #121212;
+            --color-gold-400: #D4AF37; /* Original Gold Accent Color */
+            --color-white: #ffffff;
+            --color-gray-300: #d1d5db;
+            --color-gray-400: #9ca3af;
+            --color-gray-500: #6b7280;
+            --transition-speed: 0.3s;
+            
+            /* Social Brand Colors */
+            --color-whatsapp: #25D366;
+            --color-linkedin: #0A66C2;
+            /* Instagram gradient is simulated with text color */
+        }
+
+        /* --- Base & Typography --- */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap');
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--color-dark-900);
+            color: var(--color-white);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-dark-800); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-gold-400); }
+        
+        /* Utility Classes */
+        .container { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .text-center { text-align: center; }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-3xl { border-radius: 1.5rem; }
+        .border-gold { border: 1px solid var(--color-gold-400); }
+
+        /* --- Navigation --- */
+        .glass-nav {
+            position: fixed;
+            width: 100%;
+            z-index: 50;
+            height: 5rem; /* 80px */
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all var(--transition-speed);
+        }
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-gray-300);
+            transition: color var(--transition-speed);
+        }
+        .nav-link:hover { color: var(--color-white); }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--color-white);
+            transition: color var(--transition-speed);
+        }
+        .logo-text span { color: var(--color-gold-400); }
+        
+        .mobile-menu {
+            position: absolute;
+            top: 5rem;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-dark-800);
+            border-bottom: 1px solid #222;
+            padding: 1.5rem;
+            display: none;
+        }
+        @media (max-width: 767px) {
+             .mobile-menu-open { display: block; }
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.05em;
+            margin-bottom: 2rem;
+        }
+        .hero-title-gradient {
+            background: linear-gradient(to right, var(--color-white), #ccc, #888);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* --- Buttons --- */
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--color-gold-400);
+            color: var(--color-dark-900);
+            font-weight: 700;
+            border-radius: 9999px;
+            transition: all var(--transition-speed);
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            background-color: var(--color-white);
+            transform: translateY(-2px);
+        }
+        
+        /* --- Card Animation Slider Styles --- */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            perspective: 1000px;
+        }
+        .slider-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            background-color: #000;
+            /* Default State: Hidden/Behind */
+            opacity: 0;
+            transform: translateX(50px) scale(0.8);
+            z-index: 0;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.9);
+        }
+
+        /* Active Card: Front and Center */
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 10;
+            filter: brightness(1);
+        }
+        /* Next Card: Peeking from behind */
+        .slide.next-slide {
+            opacity: 0.4;
+            transform: translateX(40px) scale(0.9) translateZ(-50px);
+            z-index: 5;
+        }
+        /* Previous Card: Sliding out */
+        .slide.prev-slide {
+            opacity: 0;
+            transform: translateX(-100px) scale(1.1) rotate(-5deg);
+            z-index: 5;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--color-white);
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            z-index: 20;
+            border-radius: 9999px;
+            transition: background 0.3s;
+        }
+        .slider-button:hover { background: rgba(212, 175, 55, 0.8); } /* Gold hover color */
+        .slider-button.prev { left: 1rem; }
+        .slider-button.next { right: 1rem; }
+        
+        .dot-navigation {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem; 
+            display: flex;
+            gap: 0.5rem;
+            z-index: 30;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            background-color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .dot.active {
+            background-color: var(--color-gold-400);
+            width: 24px; 
+        }
+
+        /* --- Text Panel Background Slider --- */
+        .text-panel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: #1a1a1a; /* Fallback */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .tp-bg-slider {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+        }
+        .tp-bg-slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: zoomFadeLocal 18s infinite;
+        }
+        .tp-bg-slide:nth-child(1) { animation-delay: 0s; }
+        .tp-bg-slide:nth-child(2) { animation-delay: 6s; }
+        .tp-bg-slide:nth-child(3) { animation-delay: 12s; }
+        
+        @keyframes zoomFadeLocal {
+            0% { opacity: 0; transform: scale(1); }
+            5% { opacity: 0.5; } /* Max opacity */
+            33% { opacity: 0.5; } 
+            38% { opacity: 0; transform: scale(1.1); } 
+            100% { opacity: 0; }
+        }
+        
+        .tp-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+            z-index: 1;
+        }
+        .tp-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* --- Services Grid (Bento) --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            grid-auto-rows: 300px;
+        }
+        @media (min-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .bento-lg { grid-column: span 2 / span 2; }
+            .bento-tall { grid-row: span 2 / span 2; }
+        }
+        .bento-item {
+            position: relative;
+            overflow: hidden;
+            background-color: #1c1c1c; /* dark-700 */
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: border-color var(--transition-speed);
+        }
+        .bento-item:hover {
+            border-color: rgba(212, 175, 55, 0.5); /* Gold accent for hover */
+        }
+        .bento-item img {
+            transition: transform 0.7s;
+            opacity: 0.6;
+        }
+        .bento-item:hover img {
+            transform: scale(1.05);
+        }
+        .bento-item-content {
+            z-index: 20;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 2rem;
+        }
+        
+        /* --- Contact Section (NEW: Compact Brand Button Style) --- */
+        .contact-section {
+            background: linear-gradient(180deg, var(--color-dark-800) 0%, var(--color-dark-900) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Base style for all brand buttons */
+        .btn-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.3s;
+            border: 1px solid transparent; 
+        }
+        .btn-brand:hover {
+            transform: translateY(-2px);
+        }
+        .btn-brand svg {
+            margin-right: 0.75rem;
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+        
+        /* WhatsApp Theme */
+        .btn-whatsapp-compact {
+            background-color: var(--color-whatsapp);
+            color: var(--color-dark-900); /* Dark text for contrast */
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+        }
+        .btn-whatsapp-compact:hover {
+            background-color: #20b857;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        /* Instagram Theme */
+        .btn-instagram-compact {
+            background: #1c1c1c; 
+            color: var(--color-white);
+            border-color: rgba(255,255,255,0.1);
+        }
+        /* Instagram Gradient Icon/Text Effect */
+        .instagram-gradient {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        .btn-instagram-compact .instagram-gradient {
+            /* This applies the gradient to the SVG/text */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .btn-instagram-compact:hover {
+            border-color: #dc2743;
+            box-shadow: 0 0 15px rgba(220, 39, 67, 0.4);
+        }
+        
+        /* LinkedIn Theme */
+        .btn-linkedin-compact {
+            background-color: var(--color-linkedin); 
+            color: var(--color-white);
+            box-shadow: 0 6px 15px rgba(10, 102, 194, 0.4);
+        }
+        .btn-linkedin-compact:hover {
+            background-color: #08529e;
+            box-shadow: 0 8px 20px rgba(10, 102, 194, 0.6);
+        }
+
+
+        /* Responsive Adjustments */
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+        }
+        @media (min-width: 768px) {
+            .md\:flex { display: flex; }
+            .md\:hidden { display: none; }
+            .md\:text-7xl { font-size: 4.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="glass-nav" id="navbar">
+        <div class="container flex justify-between items-center" style="height: 100%;">
+            <!-- Logo -->
+            <div class="cursor-pointer" onclick="window.scrollTo(0,0)">
+                <span class="logo-text">
+                    THE<span style="color: var(--color-gold-400);">CORE</span>.
+                </span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="md\:flex hidden space-x-10 items-center">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#about" class="nav-link">Agency</a>
+                <a href="#contact" class="btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">Start Project</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-btn" class="md\:hidden text-white p-2">
+                <svg class="w-8 h-8" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu" style="position: relative;">
+            <!-- Close Button -->
+            <button id="mobile-close-btn" class="text-white p-2" style="position: absolute; top: 1rem; right: 1rem;">
+                <svg class="w-8 h-8" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div style="display: flex; flex-direction: column; gap: 1rem; padding-top: 1rem;">
+                <a href="#services" class="text-white">Services</a>
+                <a href="#about" class="text-white">Agency</a>
+                <a href="#contact" class="text-gold" style="color: var(--color-gold-400); font-weight: 700;">Start Project</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container text-center" style="z-index: 10;">
+            <span style="display: inline-block; padding: 0.25rem 0.75rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 9999px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold-400); margin-bottom: 1.5rem;">
+                Dubai's Premier Branding Agency
+            </span>
+            <h1 class="hero-title" style="font-size: 4rem;">
+                WE MAKE BRANDS <br>
+                <span class="hero-title-gradient">UNFORGETTABLE.</span>
+            </h1>
+            <p style="max-width: 42rem; margin: 0 auto 2.5rem; font-size: 1.25rem; color: var(--color-gray-400); font-weight: 300;">
+                From massive outdoor signages to intricate corporate gifts, we craft visual identities that dominate the landscape.
+            </p>
+        </div>
+    </header>
+
+    <!-- About/Stats Section -->
+    <section id="about" class="py-24" style="position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);">
+        
+        <div class="container lg\:grid-cols-2" style="position: relative; z-index: 10; display: grid; gap: 4rem; align-items: center;">
+            <!-- Text Content with Background Slider -->
+            <div class="text-panel">
+                <!-- Background Slides (Using Unsplash/Placeholder for visual diversity) -->
+                <div class="tp-bg-slider">
+                    <div class="tp-bg-slide" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800');"></div>
+                    <div class="tp-bg-slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=800');"></div>
+                    <div class="tp-bg-slide" style="background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800');"></div>
+                </div>
+                <!-- Overlay -->
+                <div class="tp-overlay"></div>
+
+                <!-- Content -->
+                <div class="tp-content">
+                    <h2 style="font-size: 3rem; font-weight: 700; margin-bottom: 1.5rem;">We are <span style="color: var(--color-gold-400);">The Core</span>.</h2>
+                    <p style="color: var(--color-gray-300); margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.6;">
+                        With over 15 years of dominance in the UAE market, we don't just print; we engineer visual experiences. Our team of 10+ experts bridges the gap between creative design and industrial manufacturing.
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 3rem;">
+                        <div>
+                            <span style="display: block; font-size: 2.25rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.25rem;">980+</span>
+                            <span style="font-size: 0.75rem; color: var(--color-gray-300); text-transform: uppercase; letter-spacing: 0.1em;">Projects Done</span>
+                        </div>
+                        <div>
+                            <span style="display: block; font-size: 2.25rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.25rem;">15+</span>
+                            <span style="font-size: 0.75rem; color: var(--color-gray-300); text-transform: uppercase; letter-spacing: 0.1em;">Years Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- START: Card Style Image Slider -->
+            <div class="slider-wrapper">
+                <div class="slider-track" id="slider-track">
+                    <!-- Slide 1 -->
+                    <div class="slide active">
+                        <!-- Placeholder color -->
+                        <img src="https://placehold.co/600x400/D4AF37/121212?text=Manufacturing+Excellence" alt="Manufacturing" onerror="this.onerror=null;this.src='https://placehold.co/600x400/D4AF37/121212?text=Manufacturing+Excellence'">
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="slide next-slide">
+                         <!-- Placeholder color -->
+                        <img src="https://placehold.co/600x400/222/D4AF37?text=Expert+Installation+Team" alt="Installation" onerror="this.onerror=null;this.src='https://placehold.co/600x400/222/D4AF37?text=Expert+Installation+Team'">
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="slide">
+                         <!-- Placeholder color -->
+                        <img src="https://placehold.co/600x400/121212/D4AF37?text=Creative+Design+Process" alt="Design Process" onerror="this.onerror=null;this.src='https://placehold.co/600x400/121212/D4AF37?text=Creative+Design+Process'">
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="slide">
+                         <!-- Placeholder color -->
+                        <img src="https://placehold.co/600x400/D4AF37/121212?text=Premium+Corporate+Gifts" alt="Gift Sample" onerror="this.onerror=null;this.src='https://placehold.co/600x400/D4AF37/121212?text=Premium+Corporate+Gifts'">
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button class="slider-button prev" onclick="changeSlide(-1)">
+                    <svg class="w-6 h-6" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="slider-button next" onclick="changeSlide(1)">
+                    <svg class="w-6 h-6" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+
+                <!-- Dot Indicators -->
+                <div class="dot-navigation" id="dot-navigation">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+            </div>
+            <!-- END: Animated Image Slider -->
+
+        </div>
+    </section>
+
+    <!-- Services Grid (Bento) -->
+    <section id="services" class="py-24" style="background-color: var(--color-dark-800);">
+        <div class="container">
+            <div style="margin-bottom: 4rem; max-width: 42rem;">
+                <span style="color: var(--color-gold-400); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.875rem; display: block;">Our Expertise</span>
+                <h2 style="font-size: 3rem; font-weight: 700; color: var(--color-white);">Everything your brand needs <br>to be seen.</h2>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Large Item (Signages) -->
+                <div class="bento-item bento-lg">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 10;"></div>
+                    <!-- Placeholder color -->
+                    <img src="https://placehold.co/1000x500/121212/D4AF37?text=Massive+Signage+Display" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" alt="Signage" onerror="this.onerror=null;this.src='https://placehold.co/1000x500/121212/D4AF37?text=Massive+Signage+Display'">
+                    <div class="bento-item-content">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.5rem;">Signages & Displays</h3>
+                        <p style="color: var(--color-gray-300);">External and internal visual solutions that guide and impress.</p>
+                    </div>
+                </div>
+
+                <!-- Tall Item (Graphics & Films) - Updated to Image Style -->
+                <div class="bento-item bento-tall">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 10;"></div>
+                    <!-- Placeholder color -->
+                    <img src="https://placehold.co/600x1000/222/D4AF37?text=Graphics+Films" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" alt="Graphics" onerror="this.onerror=null;this.src='https://placehold.co/600x1000/222/D4AF37?text=Graphics+Films'">
+                    <div class="bento-item-content">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.5rem;">Graphics & Films</h3>
+                        <p style="color: var(--color-gray-300);">High-quality vinyls, frosted films, and wall decals tailored to your space.</p>
+                    </div>
+                </div>
+
+                <!-- Standard Item 1 (Printing) - Updated to Image Style -->
+                <div class="bento-item">
+                     <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 10;"></div>
+                      <!-- Placeholder color -->
+                     <img src="https://placehold.co/800x800/121212/D4AF37?text=Printing+Services" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" alt="Printing" onerror="this.onerror=null;this.src='https://placehold.co/800x800/121212/D4AF37?text=Printing+Services'">
+                    <div class="bento-item-content">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.5rem;">Printing Services</h3>
+                        <p style="color: var(--color-gray-300); font-size: 0.875rem;">Offset and digital printing for brochures, cards, and flyers.</p>
+                    </div>
+                </div>
+
+                <!-- Standard Item 2 (Gifts) - Updated to Image Style -->
+                <div class="bento-item">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 10;"></div>
+                    <!-- Placeholder color -->
+                    <img src="https://placehold.co/800x800/222/D4AF37?text=Corporate+Gifts" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" alt="Gifts" onerror="this.onerror=null;this.src='https://placehold.co/800x800/222/D4AF37?text=Corporate+Gifts'">
+                    <div class="bento-item-content">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--color-white); margin-bottom: 0.5rem;">Corporate Gifts</h3>
+                        <p style="color: var(--color-gray-300); font-size: 0.875rem;">Premium personalized gifts to foster business relationships.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section (NEW: Compact 3-Line Brand Links) -->
+    <section id="contact" class="py-24 contact-section">
+        <div class="container" style="max-width: 320px; width: 100%;">
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--color-white); margin-bottom: 2rem; text-align: center;">Get Started Now</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                
+                <!-- 1. WhatsApp (Green) -->
+                <a href="https://wa.me/971557240512?text=Hello%2C%20I%20saw%20your%20website%20and%20want%20to%20start%20a%20project." target="_blank" class="btn-brand btn-whatsapp-compact">
+                    <!-- WhatsApp SVG Icon -->
+                    <svg fill="currentColor" viewBox="0 0 24 24" style="color: var(--color-dark-900);"><path d="M12.016 4.38a7.877 7.877 0 0 0-6.195 2.873l-.406.467-2.618.724a.89.89 0 0 0-1.07.971l.66 2.508.067.253A7.877 7.877 0 0 0 4.12 12a7.876 7.876 0 0 0 15.752 0c0-4.354-3.523-7.877-7.856-7.877m3.116 11.236-1.574-.913a.628.628 0 0 0-.895.039l-.666.903a.527.527 0 0 1-.58.118c-.804-.268-2.584-1.298-3.792-3.134a4.425 4.425 0 0 1-.295-.369.605.605 0 0 1 .035-.615l.617-.655a.602.602 0 0 0 .092-.587l-.462-1.121a.764.764 0 0 0-.54-.427l-1.554-.38a.64.64 0 0 0-.742.155 3.332 3.332 0 0 0-.814 2.128c.071 1.45 1.096 3.09 3.08 4.498 2.302 1.638 4.095 2.14 5.393 2.157 1.353.017 2.32-.42 2.657-.692a.617.617 0 0 0 .202-.686l-.558-1.37a.59.59 0 0 0-.58-.337z"/></svg>
+                    Chat on WhatsApp
+                </a>
+
+                <!-- 2. Instagram (Dark Card with Gradient Icon) -->
+                <a href="#" target="_blank" class="btn-brand btn-instagram-compact">
+                    <!-- Instagram SVG Icon -->
+                    <svg class="w-7 h-7" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <g class="instagram-gradient">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.00 7.37A4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </g>
+                    </svg>
+                    <span class="instagram-gradient">Follow on Instagram</span>
+                </a>
+
+                <!-- 3. LinkedIn (Blue) -->
+                <a href="#" target="_blank" class="btn-brand btn-linkedin-compact">
+                    <!-- LinkedIn SVG Icon -->
+                    <svg fill="currentColor" viewBox="0 0 24 24" class="w-7 h-7" style="color: var(--color-white);"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.366-4-3.261-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    Connect on LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer style="background-color: var(--color-dark-900); padding-top: 3rem; padding-bottom: 3rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center;">
+            <div style="margin-bottom: 1.5rem;">
+                <span class="logo-text">THE<span style="color: var(--color-gold-400);">CORE</span>.</span>
+                <p style="color: var(--color-gray-500); font-size: 0.875rem; margin-top: 0.5rem;">© 2024 The Core Branding. All Rights Reserved.</p>
+            </div>
+            <!-- Social Links: Instagram, Facebook, and Contact -->
+            <div style="display: flex; gap: 2rem;">
+                <a href="#" style="color: var(--color-gray-500); transition: color var(--transition-speed); text-decoration: none;">Instagram</a>
+                <a href="#" style="color: var(--color-gray-500); transition: color var(--transition-speed); text-decoration: none;">Facebook</a>
+                <a href="tel:+971557240512" style="color: var(--color-gray-500); transition: color var(--transition-speed); text-decoration: none;">+971 55 724 0512</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Navigation Logic ---
+        const mobileBtn = document.getElementById('mobile-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileCloseBtn = document.getElementById('mobile-close-btn');
+        const navbar = document.getElementById('navbar');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('mobile-menu-open');
+        });
+
+        mobileCloseBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('mobile-menu-open');
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.remove('mobile-menu-open');
+            });
+        });
+        
+        // --- Card Animation Logic ---
+        const sliderTrack = document.getElementById('slider-track');
+        const dotNavigation = document.getElementById('dot-navigation');
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let autoplayInterval;
+
+        /**
+         * Updates the carousel display with CARD classes.
+         */
+        function updateSlider() {
+            // Reset all classes
+            slides.forEach((slide) => {
+                slide.classList.remove('active', 'next-slide', 'prev-slide');
+            });
+
+            // Calculate indices wrapping around
+            let next = (currentSlide + 1) % totalSlides;
+            let prev = (currentSlide - 1 + totalSlides) % totalSlides;
+
+            // Assign classes
+            slides[currentSlide].classList.add('active');
+            slides[next].classList.add('next-slide');
+            slides[prev].classList.add('prev-slide');
+
+            // Update dots
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        /**
+         * Changes the slide index and triggers updateSlider.
+         * @param {number} direction - 1 for next, -1 for previous.
+         */
+        window.changeSlide = function(direction) {
+            // Clear the existing autoplay to reset the timer on manual interaction
+            clearInterval(autoplayInterval);
+
+            currentSlide += direction;
+
+            // Loop back to the start
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+
+            updateSlider();
+            startAutoplay(); // Restart autoplay
+        };
+        
+        /**
+         * Jumps to a specific slide (used by the dots).
+         * @param {number} index - The zero-based index of the slide.
+         */
+        window.goToSlide = function(index) {
+            clearInterval(autoplayInterval);
+            currentSlide = index;
+            updateSlider();
+            startAutoplay();
+        };
+
+        /**
+         * Creates the dot navigation elements.
+         */
+        function createDots() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                dot.setAttribute('data-index', i);
+                dot.onclick = () => window.goToSlide(i);
+                dotNavigation.appendChild(dot);
+            }
+        }
+
+        /**
+         * Starts the automatic slide transition (autoplay).
+         */
+        function startAutoplay() {
+            autoplayInterval = setInterval(() => {
+                window.changeSlide(1); // Move to the next slide
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        // Initialize the slider when the script loads
+        createDots();
+        updateSlider();
+        startAutoplay();
+
+    </script>
+</body>
+</html>
